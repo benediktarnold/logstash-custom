@@ -29,8 +29,6 @@ class LogStash::Filters::Foo < LogStash::Filters::Base
     return unless filter?(event)
     if @includes
       @includes.each { |field| 
-        puts event[field]
-
         event_clone = event.clone
         @includes.each { |exclude|
           next if field == exclude
