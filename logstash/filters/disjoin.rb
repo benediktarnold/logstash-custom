@@ -17,6 +17,7 @@ class LogStash::Filters::Foo < LogStash::Filters::Base
 
   config :includes, :validate => :array
   config :cancel, :validate => :boolean
+  config :value_field, :validate => :string, :default => "value"
 
   public
   def register
@@ -34,6 +35,8 @@ class LogStash::Filters::Foo < LogStash::Filters::Base
           next if field == exclude
           event_clone.remove(exclude)
         }
+        event_clone.tag(field)
+        event_clone[@value_field] = event_clone[field]
         filter_matched(event_clone)
 
         # Push this new event onto the stack at the LogStash::FilterWorker
